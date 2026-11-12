@@ -442,3 +442,13 @@ a:hover, a:focus { color: var(--pi-orange-dark); }
 	.pi-mm__back, .pi-mm__close { background: var(--pi-gray-100) !important; color: var(--pi-black) !important; }
 	.pi-mm__close:hover, .pi-mm__back:hover { background: var(--pi-orange) !important; color: #fff !important; }
 }
+@media (max-width: 1024px) {
+	.pi-header-nav > .e-con-inner { flex-wrap: nowrap !important; align-items: center !important; }
+	.pi-header-nav > .e-con-inner > .pi-hm-mega, .pi-header-nav > .e-con-inner > .pi-hm-nav { width: auto !important; --width: auto; }
+	.pi-header-nav .pi-nav .hfe-nav-menu__toggle { margin: 0 0 0 auto; }
+}
+@media (max-width: 1024px) {
+	.pi-header-nav > .e-con-inner > .pi-hm-nav { flex: 1 1 0 !important; min-width: 0 !important; width: auto !important; align-items: flex-end; }
+	.pi-header-nav .pi-hm-nav .elementor-widget-navigation-menu { width: 100%; }
+	.pi-header-nav .pi-nav .hfe-nav-menu__layout-horizontal { width: 0; }
+}

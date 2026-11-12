@@ -11,6 +11,39 @@ An end-to-end online shop built as a portfolio project. It's an Italian-language
 
 See [project.md](project.md) for the full specification, [rules.md](rules.md) for the guardrails, and [steps.md](steps.md) for the progress log.
 
+## Screenshots
+
+| Home | Mega menu (categories) |
+|---|---|
+| ![Home](docs/screenshots/01-home.jpg) | ![Mega menu](docs/screenshots/02-mega-menu.jpg) |
+
+| Shop with filters | Product page |
+|---|---|
+| ![Shop](docs/screenshots/03-shop.jpg) | ![Product](docs/screenshots/04-product.jpg) |
+
+| Offerte Lampo | Chi siamo |
+|---|---|
+| ![Offerte Lampo](docs/screenshots/05-offerte-lampo.jpg) | ![Chi siamo](docs/screenshots/06-chi-siamo.jpg) |
+
+| FAQ | Mobile: home + category drawer |
+|---|---|
+| ![FAQ](docs/screenshots/07-faq.jpg) | ![Mobile](docs/screenshots/08-mobile.jpg) |
+
+## Project timeline
+
+Built in a single working session on **12 November 2026**. Each phase is a tagged release (see *Releases* on GitHub).
+
+| Release | Phase | What was delivered |
+|---|---|---|
+| `v0.1` | Planning | Reference analysis (17 iShop pages), `project.md`, `rules.md`, `steps.md`, `.gitignore` |
+| `v0.2` | Core setup | Local site + WP-CLI wrapper, Italian locale, WooCommerce for Italy (EUR, IVA 22%, shipping zones, test payments), child theme |
+| `v0.3` | Catalog & pages | Product renders and banners, 34-product catalog, Elementor build pipeline, header/footer, 14 pages, blog |
+| `v0.4` | QA | Card layout, sale badges, shop filters, mobile header, free-shipping logic, end-to-end checkout test, `setup.sh` |
+| `v0.5` | Mega menu | iShop-style category mega menu with emojis, filtered links, best-seller cards, mobile drill-down drawer |
+| `v1.0` | Release | Hardened `.gitignore`, screenshots, timeline, mobile header polish |
+
+The detailed step-by-step log is in [steps.md](steps.md).
+
 ## How it's built
 Everything is **reproducible from scripts**. Nothing was configured by hand in wp-admin.
 
