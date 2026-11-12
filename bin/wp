@@ -1,8 +1,15 @@
 #!/bin/bash
-# WP-CLI wrapper for the Local site "onlineshop" (PiShop)
+# WP-CLI wrapper for the Local site "onlineshop" (PiShop).
+# Uses Local's bundled PHP, MySQL client and wp-cli.phar. Sub-processes spawned by WP-CLI
+# inherit the same ini settings through PHPRC / PHP_INI_SCAN_DIR.
 LOCAL_SUPPORT="$HOME/Library/Application Support/Local"
-PHP="$LOCAL_SUPPORT/lightning-services/php-8.2.29+0/bin/darwin-arm64/bin/php"
-INI="$LOCAL_SUPPORT/run/QbDGzjQ1w/conf/php/php.ini"
-SOCK="$LOCAL_SUPPORT/run/QbDGzjQ1w/mysql/mysqld.sock"
-PHAR="/Applications/Local.app/Contents/Resources/extraResources/bin/wp-cli/wp-cli.phar"
-exec "$PHP" -c "$INI" -d "mysqli.default_socket=$SOCK" -d memory_limit=1024M "$PHAR" --path="$HOME/Local Sites/onlineshop/app/public" "$@"
+SITE_ID="QbDGzjQ1w"
+export WP_CLI_PHP="$LOCAL_SUPPORT/lightning-services/php-8.2.29+0/bin/darwin-arm64/bin/php"
+export PHPRC="$LOCAL_SUPPORT/run/$SITE_ID/conf/php/php.ini"
+export MYSQL_UNIX_PORT="$LOCAL_SUPPORT/run/$SITE_ID/mysql/mysqld.sock"
+export PATH="$LOCAL_SUPPORT/lightning-services/mysql-8.4.0+2/bin/darwin-arm64/bin:$PATH"
+# Extra ini: DB socket + memory (generated, not secret)
+INI_DIR="$(cd "$(dirname "$0")" && pwd)/php.d"
+printf 'mysqli.default_socket="%s"\npdo_mysql.default_socket="%s"\nmemory_limit=1024M\n' "$MYSQL_UNIX_PORT" "$MYSQL_UNIX_PORT" > "$INI_DIR/zz-pishop.ini"
+export PHP_INI_SCAN_DIR=":$INI_DIR"
+exec "$WP_CLI_PHP" "/Applications/Local.app/Contents/Resources/extraResources/bin/wp-cli/wp-cli.phar" --path="$HOME/Local Sites/onlineshop/app/public" "$@"
