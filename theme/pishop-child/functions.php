@@ -21,3 +21,4 @@ function pishop_enqueue_assets() {
 add_action( 'wp_enqueue_scripts', 'pishop_enqueue_assets', 20 );
 
 require_once __DIR__ . '/inc/shop.php';
+require_once __DIR__ . '/inc/megamenu.php';

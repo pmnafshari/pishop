@@ -1,15 +1,15 @@
 {
   "categories": [
-    {"slug": "smartphone", "name": "Smartphone", "render": "phone", "color": "#1d1d1f", "desc": "Gli ultimi smartphone Android e iPhone, 5G e pieghevoli."},
-    {"slug": "laptop", "name": "Laptop", "render": "laptop", "color": "#9aa0a6", "desc": "Notebook per studio, lavoro e gaming."},
-    {"slug": "audio", "name": "Cuffie e Audio", "render": "headphones", "color": "#111111", "desc": "Cuffie over-ear, true wireless e con cancellazione del rumore."},
-    {"slug": "gaming", "name": "Gaming", "render": "gamepad", "color": "#f5f5f7", "desc": "Console, controller e accessori per videogiocatori."},
-    {"slug": "smartwatch", "name": "Smartwatch", "render": "watch", "color": "#2b2b2b", "desc": "Smartwatch e smart band per sport e salute."},
-    {"slug": "speaker", "name": "Speaker", "render": "speaker", "color": "#ff6a00", "desc": "Speaker Bluetooth portatili e party box."},
-    {"slug": "power-bank", "name": "Power bank", "render": "powerbank", "color": "#3a3a3c", "desc": "Batterie portatili con ricarica rapida e wireless."},
-    {"slug": "tablet", "name": "Tablet", "render": "tablet", "color": "#6b7280", "desc": "Tablet per intrattenimento, studio e creatività."},
-    {"slug": "computer-monitor", "name": "Computer e Monitor", "render": "monitor", "color": "#111111", "desc": "Monitor, mini PC e periferiche per la scrivania."},
-    {"slug": "accessori", "name": "Accessori", "render": "charger", "color": "#f5f5f7", "desc": "Caricatori, cover, mouse e tastiere."}
+    {"slug": "smartphone", "name": "Smartphone", "render": "phone", "color": "#1d1d1f", "desc": "Gli ultimi smartphone Android e iPhone, 5G e pieghevoli.", "emoji": "📱"},
+    {"slug": "laptop", "name": "Laptop", "render": "laptop", "color": "#9aa0a6", "desc": "Notebook per studio, lavoro e gaming.", "emoji": "💻"},
+    {"slug": "audio", "name": "Cuffie e Audio", "render": "headphones", "color": "#111111", "desc": "Cuffie over-ear, true wireless e con cancellazione del rumore.", "emoji": "🎧"},
+    {"slug": "gaming", "name": "Gaming", "render": "gamepad", "color": "#f5f5f7", "desc": "Console, controller e accessori per videogiocatori.", "emoji": "🎮"},
+    {"slug": "smartwatch", "name": "Smartwatch", "render": "watch", "color": "#2b2b2b", "desc": "Smartwatch e smart band per sport e salute.", "emoji": "⌚"},
+    {"slug": "speaker", "name": "Speaker", "render": "speaker", "color": "#ff6a00", "desc": "Speaker Bluetooth portatili e party box.", "emoji": "🔊"},
+    {"slug": "power-bank", "name": "Power bank", "render": "powerbank", "color": "#3a3a3c", "desc": "Batterie portatili con ricarica rapida e wireless.", "emoji": "🔋"},
+    {"slug": "tablet", "name": "Tablet", "render": "tablet", "color": "#6b7280", "desc": "Tablet per intrattenimento, studio e creatività.", "emoji": "📲"},
+    {"slug": "computer-monitor", "name": "Computer e Monitor", "render": "monitor", "color": "#111111", "desc": "Monitor, mini PC e periferiche per la scrivania.", "emoji": "🖥️"},
+    {"slug": "accessori", "name": "Accessori", "render": "charger", "color": "#f5f5f7", "desc": "Caricatori, cover, mouse e tastiere.", "emoji": "🔌"}
   ],
   "brands": ["Apple", "Samsung", "Xiaomi", "Sony", "Google", "Motorola", "Nothing", "Lenovo", "ASUS", "Microsoft", "JBL", "Nintendo", "Anker", "Logitech"],
   "products": [

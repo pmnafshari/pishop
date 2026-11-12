@@ -51,6 +51,7 @@ foreach ( $catalog['categories'] as $i => $c ) {
 	$img = pishop_media( "$root/assets/images/categories/{$c['slug']}.png", $c['name'] );
 	update_term_meta( $id, 'thumbnail_id', $img );
 	update_term_meta( $id, 'order', $i );
+	update_term_meta( $id, 'pishop_emoji', $c['emoji'] ?? '' );
 	$cat_ids[ $c['slug'] ] = $id;
 }
 // Default "Uncategorized" → Italian, keep hidden from menus.

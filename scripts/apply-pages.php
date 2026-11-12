@@ -214,13 +214,10 @@ if ( $menu ) {
 $add = function ( $title, $args, $parent = 0 ) use ( $menu_id ) {
 	return wp_update_nav_menu_item( $menu_id, 0, array_merge( array( 'menu-item-title' => $title, 'menu-item-status' => 'publish', 'menu-item-parent-id' => $parent ), $args ) );
 };
-$cats = $add( 'Categorie', array( 'menu-item-type' => 'custom', 'menu-item-url' => home_url( '/negozio/' ) ) );
-foreach ( get_terms( array( 'taxonomy' => 'product_cat', 'hide_empty' => true, 'parent' => 0, 'orderby' => 'meta_value_num', 'meta_key' => 'order' ) ) as $t ) {
-	$add( $t->name, array( 'menu-item-type' => 'taxonomy', 'menu-item-object' => 'product_cat', 'menu-item-object-id' => $t->term_id ), $cats );
-}
+// Categories live in the [pishop_megamenu] (header), not in this menu.
 $add( 'Home', array( 'menu-item-type' => 'post_type', 'menu-item-object' => 'page', 'menu-item-object-id' => $ids['home'] ) );
 $add( 'Negozio', array( 'menu-item-type' => 'post_type', 'menu-item-object' => 'page', 'menu-item-object-id' => (int) get_option( 'woocommerce_shop_page_id' ) ) );
-$add( 'Offerte Lampo', array( 'menu-item-type' => 'post_type', 'menu-item-object' => 'page', 'menu-item-object-id' => $ids['offerte-lampo'] ) );
+$add( "⚡\u{00A0}Offerte Lampo", array( 'menu-item-type' => 'post_type', 'menu-item-object' => 'page', 'menu-item-object-id' => $ids['offerte-lampo'] ) );
 $add( 'Marchi', array( 'menu-item-type' => 'post_type', 'menu-item-object' => 'page', 'menu-item-object-id' => $ids['marchi'] ) );
 $add( 'Blog', array( 'menu-item-type' => 'post_type', 'menu-item-object' => 'page', 'menu-item-object-id' => $ids['blog'] ) );
 $add( 'Chi siamo', array( 'menu-item-type' => 'post_type', 'menu-item-object' => 'page', 'menu-item-object-id' => $ids['chi-siamo'] ) );

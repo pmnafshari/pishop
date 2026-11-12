@@ -56,7 +56,8 @@ Legend: ✅ done · 🔄 in progress · ⬜ to do · ⚠️ blocked/issue
 - ✅ 6.2 Responsive: no horizontal scroll at 375px on 15 pages; mobile header/menu fixed
 - ✅ 6.3 All pages HTTP 200 (404 page → 404); debug.log has no errors from PiShop code
 - ✅ 6.4 README + one-command `scripts/setup.sh`
-- ⬜ 6.5 Before any public deploy: cookie banner, real legal texts, remove `WP_HTTP_BLOCK_EXTERNAL`, `DISALLOW_FILE_EDIT`, HTTPS (see rules.md §10)
+- ✅ 6.5 Mega menu redesign (iShop pattern): "Categorie" trigger → full-width panel with emoji category list + hover pane (Marchi / Fascia di prezzo / Scopri + best-seller card); links go to real filtered results (`?product_brand=`, `?min_price=&max_price=`, `?orderby=`); mobile slide-in drawer with drill-down; Esc/aria-expanded/hover-intent; cached in a transient, refreshed on product/category changes
+- ⬜ 6.6 Before any public deploy: cookie banner, real legal texts, remove `WP_HTTP_BLOCK_EXTERNAL`, `DISALLOW_FILE_EDIT`, HTTPS (see rules.md §10)
 
 ---
 ## Notes / decisions

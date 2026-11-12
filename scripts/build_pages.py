@@ -251,16 +251,17 @@ def header():
         dir="row", wrap=True, boxed=True, pad=(16, 20, 16, 20), pad_m=(12, 16, 12, 16), bg="white", align="center",
         justify="space-between", gap=16, cls="pi-header-main")
     nav = C(
+        C(SC("[pishop_megamenu]"), width=None, cls="pi-hm-mega", flex_size="none"),
         C(W("navigation-menu", menu="menu-principale", layout="horizontal", align_items="left", pointer="underline",
             dropdown="tablet", submenu_icon="arrow", full_width="yes", toggle_align="left",
             **{"__globals__": {"color_menu_item": f"globals/colors?id={G['black']}", "color_menu_item_hover": f"globals/colors?id={G['orange']}",
                                "pointer_color_menu_item_hover": f"globals/colors?id={G['orange']}", "color_dropdown_item": f"globals/colors?id={G['black']}"}},
             color_menu_item=HEX["black"], color_menu_item_hover=HEX["orange"], pointer_color_menu_item_hover=HEX["orange"],
             padding_horizontal_menu_item=size(14), padding_vertical_menu_item=size(12), _css_classes="pi-nav"),
-          width=75, width_m=50),
+          width=None, cls="pi-hm-nav", flex_grow=1),
         C(ICONLIST([("02 1234 5678", "tel:+390212345678", "fas fa-phone-alt")], "black", "orange", inline=True, sz=14),
-          width=25, width_m=50, align="flex-end", justify="center"),
-        dir="row", dir_m="row", boxed=True, pad=(2, 20, 2, 20), bg="white", align="center", justify="space-between",
+          width=None, align="flex-end", justify="center", cls="pi-hm-phone"),
+        dir="row", dir_m="row", boxed=True, pad=(8, 20, 8, 20), gap=18, bg="white", align="center", justify="space-between",
         border=((1, 0, 1, 0), "g200"), cls="pi-header-nav")
     return [topbar, main, nav]
 
