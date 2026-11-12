@@ -57,26 +57,29 @@ def brand():
     add("logo.png", 660, 192, f"<div style='transform:scale(2);transform-origin:0 0'>{LOGO_SVG.replace('{fg}', '#111111')}</div>", folder=BR)
     add("logo-white.png", 660, 192, f"<div style='transform:scale(2);transform-origin:0 0'>{LOGO_SVG.replace('{fg}', '#FFFFFF')}</div>", folder=BR)
     add("icon.png", 512, 512, ICON_SVG, folder=BR)
+    # Testimonial avatars (initials, no real people's photos)
+    for k, (ini, bg, fg) in enumerate([("GR", "#FF6A00", "#FFFFFF"), ("MB", "#111111", "#FF6A00"), ("FL", "#FFF1E6", "#FF6A00")]):
+        add(f"avatar-{k}.png", 200, 200, f"<div style='width:200px;height:200px;border-radius:50%;background:{bg};color:{fg};display:grid;place-items:center;font:800 76px Poppins'>{ini}</div>", folder=BR)
 
 
 # ── Hero backgrounds (no text: copy lives in Elementor) ──────────────
 def heroes():
     bg_dark = "background:radial-gradient(circle at 75% 45%,#3a2010 0,#151515 45%,#0b0b0b 100%)"
     add("hero-smartphone.png", 1600, 640, f"""<div class='b' style='{bg_dark}'>
-      <div style='position:absolute;right:120px;top:40px;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,#ff6a00 0,rgba(255,106,0,.0) 70%);opacity:.55'></div>
-      <img class='img' src='{P("pi-sp-002")}' style='right:420px;top:60px;width:520px;transform:rotate(-6deg)'>
-      <img class='img' src='{P("pi-sp-001-arancione")}' style='right:90px;top:20px;width:600px'>
+      <div style='position:absolute;right:40px;top:40px;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,#ff6a00 0,rgba(255,106,0,.0) 70%);opacity:.55'></div>
+      <img class='img' src='{P("pi-sp-002")}' style='right:330px;top:110px;width:400px;transform:rotate(-6deg)'>
+      <img class='img' src='{P("pi-sp-001-arancione")}' style='right:20px;top:40px;width:540px'>
     </div>""")
     add("hero-laptop.png", 1600, 640, f"""<div class='b' style='background:linear-gradient(120deg,#ff6a00 0,#ff8a3d 45%,#ffb27a 100%)'>
       <div style='position:absolute;right:-120px;top:-200px;width:900px;height:900px;border-radius:50%;background:rgba(255,255,255,.12)'></div>
-      <img class='img' src='{P("pi-lp-001")}' style='right:250px;top:40px;width:640px'>
-      <img class='img' src='{P("pi-au-001")}' style='right:40px;top:200px;width:420px'>
+      <img class='img' src='{P("pi-lp-001")}' style='right:120px;top:80px;width:480px'>
+      <img class='img' src='{P("pi-au-001")}' style='right:-20px;top:250px;width:330px'>
     </div>""")
     add("hero-gaming.png", 1600, 640, f"""<div class='b' style='background:linear-gradient(135deg,#111 0,#2b2b2b 60%,#3a3a3c 100%)'>
       <div style='position:absolute;left:0;right:0;bottom:0;height:40%;background:linear-gradient(0deg,rgba(255,106,0,.35),transparent)'></div>
-      <img class='img' src='{P("pi-gm-001")}' style='right:330px;top:20px;width:560px'>
-      <img class='img' src='{P("pi-gm-003-arancione")}' style='right:40px;top:240px;width:420px'>
-      <img class='img' src='{P("pi-gm-005")}' style='right:760px;top:260px;width:300px;opacity:.95'>
+      <img class='img' src='{P("pi-gm-001")}' style='right:200px;top:50px;width:460px'>
+      <img class='img' src='{P("pi-gm-003-arancione")}' style='right:0px;top:250px;width:380px'>
+      <img class='img' src='{P("pi-gm-005")}' style='right:560px;top:320px;width:220px;opacity:.95'>
     </div>""")
 
 

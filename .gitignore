@@ -40,3 +40,4 @@ Thumbs.db
 *.swp
 bin/php.d/
 data/media-map.json
+data/build/

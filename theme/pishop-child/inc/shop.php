@@ -124,7 +124,7 @@ add_shortcode(
 
 // Stock progress bar on flash-sale cards.
 add_action(
-	'woocommerce_after_shop_loop_item_title',
+	'astra_woo_shop_price_after',
 	function () {
 		global $product;
 		if ( ! $product || ! has_term( 'offerta-lampo', 'product_tag', $product->get_id() ) || ! $product->managing_stock() ) {
@@ -133,9 +133,8 @@ add_action(
 		$left = max( 0, (int) $product->get_stock_quantity() );
 		$sold = (int) $product->get_total_sales();
 		$pct  = $left + $sold ? round( $sold / ( $left + $sold ) * 100 ) : 0;
-		echo '<div class="pi-stockbar"><span style="width:' . (int) $pct . '%"></span></div><p class="pi-stocktext">Disponibili: <b>' . (int) $left . '</b> · Venduti: ' . (int) $sold . '</p>';
-	},
-	7
+		echo '<div class="pi-stock"><div class="pi-stockbar"><span style="width:' . (int) $pct . '%"></span></div><p class="pi-stocktext">Disponibili: <b>' . (int) $left . '</b> · Venduti: ' . (int) $sold . '</p></div>';
+	}
 );
 
 /* ───────────────────────── Brands & blog ───────────────────────────── */
@@ -166,7 +165,7 @@ add_shortcode(
 				. '<div class="pi-post__body">' . ( $cat ? '<span class="pi-post__cat">' . esc_html( $cat[0]->name ) . '</span>' : '' )
 				. '<h3><a href="' . esc_url( get_permalink( $p ) ) . '">' . esc_html( get_the_title( $p ) ) . '</a></h3>'
 				. '<p>' . esc_html( wp_trim_words( get_the_excerpt( $p ), 20 ) ) . '</p>'
-				. '<span class="pi-post__meta">' . esc_html( get_the_date( 'j F Y', $p ) ) . ' · ' . max( 1, (int) ceil( str_word_count( wp_strip_all_tags( $p->post_content ) ) / 200 ) ) . ' min di lettura</span></div></article>';
+				. '<span class="pi-post__meta">' . esc_html( get_the_date( 'j F Y', $p ) ) . ' · ' . max( 1, (int) ceil( count( preg_split( '/\\s+/u', wp_strip_all_tags( $p->post_content ), -1, PREG_SPLIT_NO_EMPTY ) ) / 200 ) ) . ' min di lettura</span></div></article>';
 		}
 		return $out . '</div>';
 	}
@@ -190,7 +189,7 @@ add_filter(
 		}
 		return $html;
 	},
-	10,
+	20, // After Astra's own sale_flash filter (priority 10).
 	3
 );
 
@@ -266,4 +265,27 @@ add_action(
 		<?php
 	},
 	99
+);
+
+// When free shipping is available, hide the paid flat rate (keep pickup).
+add_filter(
+	'woocommerce_package_rates',
+	function ( $rates ) {
+		$free = array_filter( $rates, fn( $r ) => 'free_shipping' === $r->method_id );
+		if ( ! $free ) {
+			return $rates;
+		}
+		return array_filter( $rates, fn( $r ) => 'flat_rate' !== $r->method_id );
+	},
+	100
+);
+
+// Featured image at the top of single blog posts.
+add_action(
+	'astra_entry_content_before',
+	function () {
+		if ( is_singular( 'post' ) && has_post_thumbnail() ) {
+			echo '<figure class="pi-post-hero">' . get_the_post_thumbnail( null, 'large', array( 'loading' => 'eager' ) ) . '</figure>';
+		}
+	}
 );

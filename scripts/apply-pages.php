@@ -240,8 +240,9 @@ $astra = array_merge(
 		'single-product-ast-content-layout'  => 'normal-width-container',
 		'site-sidebar-layout'              => 'no-sidebar',
 		'single-page-sidebar-layout'       => 'no-sidebar',
-		'woocommerce-sidebar-layout'       => 'no-sidebar',
-		'archive-product-sidebar-layout'   => 'no-sidebar',
+		'woocommerce-sidebar-layout'       => 'left-sidebar',
+		'archive-product-sidebar-layout'   => 'left-sidebar',
+		'site-sidebar-width'               => 24,
 		'single-product-sidebar-layout'    => 'no-sidebar',
 		'site-content-width'               => 1320,
 		'theme-color'                      => '#FF6A00',
@@ -250,8 +251,9 @@ $astra = array_merge(
 		'heading-base-color'               => '#111111',
 		'button-bg-color'                  => '#FF6A00',
 		'button-bg-h-color'                => '#111111',
-		'shop-grid'                        => array( 'desktop' => 4, 'tablet' => 3, 'mobile' => 2 ),
+		'shop-grid'                        => array( 'desktop' => 3, 'tablet' => 3, 'mobile' => 2 ),
 		'shop-no-of-products'              => 16,
+		'shop-style'                       => 'shop-page-grid-style',
 		'shop-product-structure'           => array( 'category', 'title', 'ratings', 'price', 'add_cart' ),
 		'single-product-breadcrumb-disable' => false,
 		'blog-single-width'                => 'narrow',
@@ -263,6 +265,32 @@ if ( $logo ) {
 	update_option( 'site_icon', $logo );
 }
 update_option( 'woocommerce_placeholder_image', $media['brand/icon']['id'] ?? '' );
+
+/* ── 6b. Compare / wishlist labels (Italian) ───────────────────────── */
+$l = (array) get_option( 'woosc_localization', array() );
+update_option( 'woosc_localization', array_merge( $l, array( 'button' => 'Confronta', 'button_added' => 'In confronto', 'bar_compare' => 'Confronta', 'bar_clear' => 'Svuota', 'table_empty' => 'Nessun prodotto da confrontare.' ) ) );
+$l = (array) get_option( 'woosw_localization', array() );
+update_option( 'woosw_localization', array_merge( $l, array( 'button' => 'Preferiti', 'button_added' => 'Nei preferiti', 'popup_heading' => 'Lista desideri', 'empty_message' => 'La tua lista desideri è vuota.' ) ) );
+
+/* ── 6c. Shop sidebar filters (classic Woo widgets) ─────────────────── */
+$sidebar = 'astra-woo-shop-sidebar';
+$widgets = array(
+	'woocommerce_product_categories' => array( 'title' => 'Categorie', 'count' => 1, 'hierarchical' => 1, 'orderby' => 'order' ),
+	'woocommerce_price_filter'       => array( 'title' => 'Filtra per prezzo' ),
+	'woocommerce_layered_nav'        => array( 'title' => 'Colore', 'attribute' => 'colore', 'display_type' => 'list', 'query_type' => 'or' ),
+	'woocommerce_rating_filter'      => array( 'title' => 'Valutazione' ),
+);
+$sidebars = get_option( 'sidebars_widgets', array() );
+$sidebars[ $sidebar ] = array();
+foreach ( $widgets as $base => $instance ) {
+	$all              = get_option( "widget_$base", array() );
+	$all              = is_array( $all ) ? $all : array();
+	$all[1]           = $instance;
+	$all['_multiwidget'] = 1;
+	update_option( "widget_$base", $all );
+	$sidebars[ $sidebar ][] = "$base-1";
+}
+update_option( 'sidebars_widgets', $sidebars );
 
 /* ── 7. Clear caches ────────────────────────────────────────────────── */
 if ( class_exists( '\Elementor\Plugin' ) ) {

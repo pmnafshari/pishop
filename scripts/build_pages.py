@@ -95,12 +95,16 @@ def C(*children, dir="column", width=None, width_t=None, width_m=None, boxed=Fal
         s["background_overlay_background"] = "gradient"
         s["background_overlay_color"] = overlay[0]; s["background_overlay_color_b"] = overlay[1]
         s["background_overlay_gradient_angle"] = size(90, "deg")
+        s["background_overlay_color_stop"] = size(overlay[2] if len(overlay) > 2 else 0, "%")
+        s["background_overlay_color_b_stop"] = size(100, "%")
     if rad: s["border_radius"] = radius(rad)
     if minh: s["min_height"] = size(minh)
     if minh_m: s["min_height_mobile"] = size(minh_m)
     if justify: s["flex_justify_content"] = justify
     if align: s["flex_align_items"] = align
-    if wrap: s["flex_wrap"] = "wrap"
+    if wrap == "m":  # one line on desktop, wrap on tablet/mobile
+        s["flex_wrap"] = "nowrap"; s["flex_wrap_tablet"] = "wrap"; s["flex_wrap_mobile"] = "wrap"
+    elif wrap: s["flex_wrap"] = "wrap"
     if dir_m: s["flex_direction_mobile"] = dir_m
     if dir_t: s["flex_direction_tablet"] = dir_t
     if cls: s["css_classes"] = cls
@@ -221,9 +225,10 @@ def page_hero(title, subtitle, img="banners/about-hero", dark=False, crumbs=None
     color = "white" if dark else "black"
     inner = [T(f'<a href="/">Home</a> / {crumbs or title}', "gray" if not dark else "g200", 13, mb=0),
              H(title, "h1", 46, color, sz_m=32), T(subtitle, "gray" if not dark else "g200", 17)]
-    return C(C(*inner, width=55, width_m=100, gap=8), boxed=True, pad=(70, 20, 70, 20), pad_m=(40, 16, 40, 16), bg_img=img, minh=320,
+    return C(C(*inner, width=48, width_t=70, width_m=100, gap=8), boxed=True, pad=(70, 20, 70, 20), pad_m=(40, 16, 40, 16), bg_img=img, minh=320,
              minh_m=0, justify="center", dir="column", cls="pi-page-hero",
-             overlay=("rgba(255,255,255,0.92)", "rgba(255,255,255,0)") if not dark else ("rgba(17,17,17,0.92)", "rgba(17,17,17,0.1)"))
+             overlay=("rgba(255,255,255,0.97)", "rgba(255,255,255,0)", 48) if not dark else ("rgba(17,17,17,0.92)", "rgba(17,17,17,0.15)", 40),
+             background_position="center right")
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -232,17 +237,17 @@ def page_hero(title, subtitle, img="banners/about-hero", dark=False, crumbs=None
 def header():
     _ctx.update(page="header", n=0)
     topbar = C(
-        C(T("🚚 Spedizione gratuita sopra 49 € &nbsp;·&nbsp; ↩️ Reso gratuito entro 14 giorni &nbsp;·&nbsp; 💳 Paga anche alla consegna", "white", 13, lh=1.3),
+        C(T("🚚 Spedizione gratuita sopra 49 €<span class=\"pi-tb-more\"> &nbsp;·&nbsp; ↩️ Reso gratuito entro 14 giorni &nbsp;·&nbsp; 💳 Paga anche alla consegna</span>", "white", 13, lh=1.3),
           width=65, width_m=100),
         C(ICONLIST([("Traccia ordine", "/traccia-ordine/", "fas fa-truck"), ("Assistenza", "/contatti/", "fas fa-headset"),
                     ("Offerte Lampo", "/offerte-lampo/", "fas fa-bolt")], "white", "orange", inline=True, sz=13),
           width=35, width_m=100, justify="center", align="flex-end", cls="elementor-hidden-mobile"),
         dir="row", boxed=True, pad=(9, 20, 9, 20), bg="black", align="center", justify="space-between", gap=10, cls="pi-topbar")
     main = C(
-        C(W("site-logo", custom_image=m("brand/logo"), site_logo_fallback="no", width=size(170), width_mobile=size(130),
-            align="left", link_to="default"), width=18, width_t=25, width_m=45),
-        C(SC("[pishop_search]"), width=50, width_t=40, width_m=100, cls="pi-search-wrap"),
-        C(SC("[pishop_header_icons]"), width=28, width_t=35, width_m=55, align="flex-end"),
+        C(W("image", image=m("brand/logo"), image_size="full", width=size(170, "px"), width_mobile=size(130, "px"), align="left",
+            link_to="custom", link={"url": "/"}, _css_classes="pi-logo"), width=18, width_t=25, width_m=45, cls="pi-hm-logo"),
+        C(SC("[pishop_search]"), width=50, width_t=40, width_m=100, cls="pi-hm-search"),
+        C(SC("[pishop_header_icons]"), width=28, width_t=35, width_m=50, align="flex-end", cls="pi-hm-icons"),
         dir="row", wrap=True, boxed=True, pad=(16, 20, 16, 20), pad_m=(12, 16, 12, 16), bg="white", align="center",
         justify="space-between", gap=16, cls="pi-header-main")
     nav = C(
@@ -255,7 +260,7 @@ def header():
           width=75, width_m=50),
         C(ICONLIST([("02 1234 5678", "tel:+390212345678", "fas fa-phone-alt")], "black", "orange", inline=True, sz=14),
           width=25, width_m=50, align="flex-end", justify="center"),
-        dir="row", boxed=True, pad=(2, 20, 2, 20), bg="white", align="center", justify="space-between",
+        dir="row", dir_m="row", boxed=True, pad=(2, 20, 2, 20), bg="white", align="center", justify="space-between",
         border=((1, 0, 1, 0), "g200"), cls="pi-header-nav")
     return [topbar, main, nav]
 
@@ -265,21 +270,21 @@ def header():
 # ══════════════════════════════════════════════════════════════════════
 def footer():
     _ctx.update(page="footer", n=0)
-    benefits = C(*[C(ICONBOX(i, t, d), width=25, width_t=50, width_m=100) for i, t, d in [
+    benefits = C(*[C(ICONBOX(i, t, d), width=23, width_t=47, width_m=100) for i, t, d in [
         ("fas fa-shipping-fast", "Spedizione gratuita", "Su tutti gli ordini sopra 49 € in Italia"),
         ("fas fa-undo-alt", "Reso entro 14 giorni", "Reso semplice e gratuito, senza domande"),
         ("fas fa-shield-alt", "Pagamenti sicuri", "Carta, bonifico o contrassegno"),
         ("fas fa-headset", "Assistenza 7 giorni su 7", "Esperti a tua disposizione via chat e telefono")]],
-        dir="row", wrap=True, boxed=True, pad=(36, 20, 36, 20), bg="g100", gap=20)
+        dir="row", wrap="m", justify="space-between", boxed=True, pad=(36, 20, 36, 20), bg="g100", gap=20)
     newsletter = C(
         C(H("Iscriviti alla newsletter", "h3", 28, "white", sz_m=22),
           T("Ricevi in anteprima offerte lampo e novità. Subito per te un coupon di 10 € sul primo ordine.", "white", 15), width=50, width_m=100, gap=4),
         C(SC("[wpforms id=\"{{FORM_NEWSLETTER}}\" title=\"false\"]", cls="pi-newsletter"), width=50, width_m=100),
         dir="row", dir_m="column", boxed=True, pad=(34, 20, 34, 20), bg="orange", align="center", gap=24)
-    col = lambda title, items: C(H(title, "h4", 16, "white", mb=6), ICONLIST(items, "g200", "orange", sz=14, space=8), width=17, width_t=33, width_m=100, gap=10)
+    col = lambda title, items: C(H(title, "h4", 16, "white", mb=6), ICONLIST(items, "g200", "orange", sz=14, space=8), width=15, width_t=30, width_m=100, gap=10)
     cats = [(c["name"], f"/categoria-prodotto/{c['slug']}/") for c in CAT["categories"][:7]]
     main = C(
-        C(IMG("brand/logo-white", "/", 0, 60, cls=""),
+        C(W("image", image=m("brand/logo-white"), image_size="full", width=size(170, "px"), align="left", link_to="custom", link={"url": "/"}),
           T("PiShop è il negozio online di elettronica con sede a Milano. Smartphone, laptop, gaming e accessori originali con garanzia Italia.", "g200", 14),
           W("social-icons", social_icon_list=[{"_id": uid(), "social_icon": {"value": v, "library": "fa-brands"}, "link": {"url": u, "is_external": "on"}}
                                               for v, u in [("fab fa-instagram", "https://instagram.com/"), ("fab fa-facebook-f", "https://facebook.com/"),
@@ -287,7 +292,7 @@ def footer():
                                                            ("fab fa-whatsapp", "https://wa.me/390212345678")]],
             shape="circle", icon_color="custom", icon_primary_color="#2B2B2B", icon_secondary_color="#FFFFFF", icon_size=size(15),
             icon_padding=size(.7, "em"), icon_spacing=size(8), hover_primary_color=HEX["orange"], align="left"),
-          width=30, width_t=100, width_m=100, gap=14),
+          width=26, width_t=100, width_m=100, gap=14),
         col("Negozio", cats),
         col("Assistenza", [("Il mio account", "/mio-account/"), ("Traccia ordine", "/traccia-ordine/"), ("Spedizioni e resi", "/spedizioni-e-resi/"),
                            ("Domande frequenti", "/faq/"), ("Contatti", "/contatti/")]),
@@ -296,12 +301,12 @@ def footer():
         C(H("Contatti", "h4", 16, "white", mb=6),
           ICONLIST([("Via Torino 21, 20123 Milano", "https://maps.google.com/?q=Via+Torino+21+Milano", "fas fa-map-marker-alt"),
                     ("02 1234 5678", "tel:+390212345678", "fas fa-phone-alt"), ("assistenza@pishop.example", "mailto:assistenza@pishop.example", "fas fa-envelope"),
-                    ("Lun–Sab 9:00–19:00", "", "fas fa-clock")], "g200", "orange", sz=14, space=8), width=19, width_t=33, width_m=100, gap=10),
-        dir="row", wrap=True, boxed=True, pad=(56, 20, 40, 20), bg="black", gap=24, cls="pi-footer")
+                    ("Lun–Sab 9:00–19:00", "", "fas fa-clock")], "g200", "orange", sz=14, space=8), width=18, width_t=30, width_m=100, gap=10),
+        dir="row", wrap=True, justify="space-between", boxed=True, pad=(56, 20, 40, 20), bg="black", gap=24, cls="pi-footer")
     bottom = C(
-        C(T("© [pishop_year] PiShop S.r.l. · P.IVA 01234567890 · Tutti i diritti riservati. Sito dimostrativo.", "gray", 13), width=55, width_m=100),
+        C(T("© [pishop_year] PiShop S.r.l. · P.IVA 01234567890 · Tutti i diritti riservati. Sito dimostrativo.", "gray", 13), width=58, width_m=100),
         C(SC('<div class="pi-pay"><span>VISA</span><span>Mastercard</span><span>PayPal</span><span>Bonifico</span><span>Contrassegno</span></div>'),
-          width=45, width_m=100, align="flex-end"),
+          width=38, width_m=100, align="flex-end"),
         dir="row", dir_m="column", wrap=True, boxed=True, pad=(18, 20, 18, 20), bg="black", align="center", justify="space-between",
         border=((1, 0, 0, 0), "text"), cls="pi-footer")
     return [benefits, newsletter, main, bottom]
@@ -314,18 +319,18 @@ def home():
     _ctx.update(page="home", n=0)
     hero = C(
         C(SC('<span class="pi-eyebrow" style="background:#ff6a00;color:#fff">Nuova collezione 2026</span>'),
-          H("La tecnologia che ami,<br>al prezzo giusto.", "h1", 52, "white", sz_m=32, lh=1.05),
-          T("Smartphone, laptop e gaming dei migliori marchi. Spedizione gratuita sopra 49 € e reso entro 14 giorni.", "g200", 17),
+          H("La tecnologia<br>che ami, al<br>prezzo giusto.", "h1", 50, "white", sz_m=32, lh=1.05),
+          T("Smartphone, laptop e gaming dei migliori marchi.<br>Spedizione gratuita sopra 49 € e reso entro 14 giorni.", "g200", 17),
           C(BTN("Scopri il negozio", "/negozio/", "orange"), BTN("Offerte lampo", "/offerte-lampo/", "ghost", icon=False),
             dir="row", wrap=True, gap=12, margin=(10, 0, 0, 0)),
           width=66, width_t=100, width_m=100, slideshow=["banners/hero-smartphone", "banners/hero-laptop", "banners/hero-gaming"],
-          overlay=("rgba(17,17,17,0.88)", "rgba(17,17,17,0)"), rad=22, minh=470, minh_m=420, pad=(50, 48, 50, 48), pad_m=(32, 22, 32, 22),
-          justify="center", gap=14, overflow=True),
+          overlay=("rgba(17,17,17,0.92)", "rgba(17,17,17,0)", 38), rad=22, minh=470, minh_m=420, pad=(50, 48, 50, 48), pad_m=(32, 22, 32, 22),
+          justify="center", gap=14, overflow=True, cls="pi-hero"),
         C(IMG("banners/promo-smartwatch", "/categoria-prodotto/smartwatch/", 22), IMG("banners/promo-powerbank", "/categoria-prodotto/power-bank/", 22),
           width=34, width_t=100, width_m=100, dir_t="row", dir_m="column", gap=16, justify="space-between"),
         dir="row", dir_t="column", boxed=True, pad=(24, 20, 24, 20), gap=16)
 
-    tiles = [C(W("image-box", image=m(f"categories/{c['slug']}"), title_text=c["name"], link={"url": f"/categoria-prodotto/{c['slug']}/"},
+    tiles = [C(W("image-box", image=m(f"categories/{c['slug']}"), title_text=c["name"], description_text="", link={"url": f"/categoria-prodotto/{c['slug']}/"},
                  position="top", image_size=size(78, "%"), title_size="h3", text_align="center", _css_classes="pi-cat-tile",
                  title_typography_typography="custom", title_typography_font_family="Poppins", title_typography_font_size=size(15),
                  title_typography_font_weight="600", image_space=size(10)),
@@ -340,7 +345,7 @@ def home():
           dir="row", dir_m="column", align="center", justify="space-between", gap=14),
         SC("[pishop_flash_products columns=\"4\" limit=\"4\"]"),
         C(BTN("Vedi tutte le offerte", "/offerte-lampo/", "orange", "center"), align="center"),
-        boxed=True, pad=(40, 36, 40, 36), pad_m=(28, 14, 28, 14), bg="black", rad=24, gap=24, margin=(20, 0, 20, 0), cls="pi-flash-box")
+        boxed=True, pad=(40, 36, 40, 36), pad_m=(28, 14, 28, 14), bg="black", rad=24, gap=24, margin=(20, 0, 20, 0), cls="pi-flash-box pi-dark")
     flash_wrap = C(flash, boxed=True, pad=(0, 20, 0, 20))
 
     new = C(section_head("Novità", "Nuovi arrivi", "Vedi tutti", "/tag-prodotto/novita/"),
@@ -366,10 +371,10 @@ def home():
                ("Prezzi onesti e offerte lampo davvero convenienti. Ho preso la PS5 con il pacchetto gamer e ho risparmiato parecchio.", "Marco Bianchi", "Cliente dal 2022, Torino"),
                ("Ho fatto un reso senza problemi e il rimborso è arrivato in tre giorni. Finalmente un e-commerce affidabile.", "Francesca Lombardi", "Napoli")]
     testi = C(section_head("Recensioni", "Cosa dicono i nostri clienti", center=True),
-              C(*[C(W("testimonial", testimonial_content=f"⭐⭐⭐⭐⭐<br>{q}", testimonial_name=n, testimonial_job=j, testimonial_alignment="left",
+              C(*[C(W("testimonial", testimonial_content=f"⭐⭐⭐⭐⭐<br>{q}", testimonial_name=n, testimonial_job=j, testimonial_alignment="left", testimonial_image=m(f"brand/avatar-{k}"), image_size=size(52),
                       content_content_color=HEX["text"], name_text_color=HEX["black"], job_text_color=HEX["gray"],
                       content_typography_typography="custom", content_typography_font_size=size(15), content_typography_line_height=size(1.6, "em")),
-                    width=33.333, width_m=100, bg="white", rad=18, pad=(26, 26, 26, 26), cls="pi-card") for q, n, j in reviews],
+                    width=33.333, width_m=100, bg="white", rad=18, pad=(26, 26, 26, 26), cls="pi-card") for k, (q, n, j) in enumerate(reviews)],
                 dir="row", dir_m="column", gap=20),
               boxed=True, pad=(50, 20, 50, 20), bg="g100", gap=10)
 
@@ -386,7 +391,7 @@ def offerte():
     hero = C(C(SC('<span class="pi-eyebrow" style="background:#fff;color:#ff6a00">Solo per poco tempo</span>'),
                H("Offerte Lampo", "h1", 52, "white", sz_m=34), T("Sconti fino al 50% sui prodotti più desiderati. Scorte limitate.", "white", 17),
                SC("[pishop_countdown label=\"Termina tra\"]"), width=50, width_m=100, gap=12),
-             boxed=True, bg_img="banners/flash-deals", pad=(70, 20, 70, 20), pad_m=(40, 16, 40, 16), minh=380, justify="center",
+             boxed=True, bg_img="banners/flash-deals", pad=(70, 20, 70, 20), pad_m=(40, 16, 40, 16), minh=380, justify="center", cls="pi-dark",
              overlay=("rgba(17,17,17,0.85)", "rgba(17,17,17,0)"))
     flash = C(section_head("In scadenza", "Le offerte del momento"), SC('[pishop_flash_products columns="4" limit="8"]'), boxed=True, pad=(40, 20, 20, 20), gap=0)
     all_sale = C(section_head("Saldi", "Tutti i prodotti in sconto"), SC('[sale_products limit="16" columns="4"]'), boxed=True, pad=(30, 20, 20, 20), gap=0)
@@ -409,19 +414,19 @@ def chi_siamo():
                        typography_title_typography="custom", typography_title_font_family="Inter", typography_title_font_size=size(15)),
                      width=25, width_m=50, bg="white", rad=18, pad=(26, 10, 26, 10), cls="pi-card")
                    for n, s, t in [(2015, "", "Anno di fondazione"), (120000, "+", "Clienti soddisfatti"), (48, "", "Ore max di consegna"), (4500, "+", "Prodotti in catalogo")]],
-                 dir="row", wrap=True, boxed=True, pad=(40, 20, 40, 20), bg="g100", gap=20)
+                 dir="row", wrap="m", boxed=True, pad=(40, 20, 40, 20), bg="g100", gap=20)
     values = C(section_head("I nostri valori", "Perché scegliere PiShop", center=True),
                C(*[C(ICONBOX(i, t, d, "top"), width=25, width_t=50, width_m=100, bg="white", rad=18, pad=(28, 20, 28, 20), border=((1, 1, 1, 1), "g200"))
                    for i, t, d in [("fas fa-check-circle", "Prodotti originali", "Solo prodotti nuovi e originali, con garanzia ufficiale Italia."),
                                    ("fas fa-tags", "Prezzi trasparenti", "Nessun costo nascosto: IVA e spedizione sempre indicate."),
                                    ("fas fa-user-friends", "Consulenza vera", "Il nostro team ti aiuta a scegliere, anche dopo l’acquisto."),
                                    ("fas fa-leaf", "Imballaggi sostenibili", "Cartone riciclato e spedizioni a impatto compensato.")]],
-                 dir="row", wrap=True, gap=20), boxed=True, pad=(60, 20, 40, 20), gap=10)
+                 dir="row", wrap="m", gap=20), boxed=True, pad=(60, 20, 40, 20), gap=10)
     awards = C(section_head("Riconoscimenti", "Premi e certificazioni", center=True),
                C(*[C(ICONBOX("fas fa-award", t, d, "top", view="default"), width=20, width_t=33, width_m=50) for t, d in
                    [("E-commerce dell’anno", "Netcomm Awards 2025"), ("Miglior servizio clienti", "Categoria elettronica 2024"),
                     ("Negozio certificato", "Recensioni verificate 4,8/5"), ("Spedizioni green", "Partner logistico CO₂ neutral"),
-                    ("Pagamenti sicuri", "Certificazione PCI DSS")]], dir="row", wrap=True, gap=10),
+                    ("Pagamenti sicuri", "Certificazione PCI DSS")]], dir="row", wrap="m", gap=10),
                boxed=True, pad=(30, 20, 40, 20), gap=10)
     team_members = [("Luca Ferri", "Fondatore e CEO"), ("Sara Conti", "Responsabile acquisti"), ("Davide Greco", "Customer care"), ("Elena Marino", "Marketing")]
     team = C(section_head("Il team", "Le persone dietro PiShop", center=True),

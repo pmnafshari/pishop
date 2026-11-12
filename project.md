@@ -103,8 +103,8 @@
 | Ultimate Addons for Elementor (Header Footer Elementor) | Header and footer built in Elementor |
 | WPC Smart Compare for WooCommerce | Product comparison page |
 | WPC Smart Wishlist for WooCommerce | Wishlist |
-| Contact Form 7 | Contact form |
-| Complianz – GDPR/CCPA Cookie Consent *(optional)* | Cookie banner (IT law) |
+| WPForms Lite | Contact form + newsletter form (Contact Form 7 needs PHP 8.3; the site runs 8.2) |
+| *(before going public)* Complianz or similar | Cookie banner (IT law) |
 
 ## 7. Imagery
 - Banners, hero slides and category tiles are **generated locally** with a Python script (`scripts/make_images.py`) in the brand palette. No copyrighted assets from the reference.

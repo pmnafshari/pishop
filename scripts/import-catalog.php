@@ -90,12 +90,13 @@ function pishop_description( $p, $cat_name ) {
 		$specs .= '<tr><th>' . esc_html( $k ) . '</th><td>' . esc_html( $v ) . '</td></tr>';
 	}
 	$first = array_values( $p['specs'] );
+	$keys  = array_keys( $p['specs'] );
 	return '<h2>Panoramica</h2>'
 		. '<p>' . esc_html( $p['short'] ) . ' ' . esc_html( $p['name'] ) . ' è una delle scelte più apprezzate nella categoria ' . esc_html( $cat_name ) . ' su PiShop: qualità del marchio ' . esc_html( $p['brand'] ) . ', garanzia ufficiale Italia di 24 mesi e assistenza dedicata.</p>'
 		. '<h2>Design e qualità costruttiva</h2>'
 		. '<p>Materiali curati, finiture precise ed ergonomia studiata per l’uso quotidiano. Leggero da portare con sé, solido quando serve.</p>'
 		. '<h2>Prestazioni</h2>'
-		. '<p>Con ' . esc_html( strtolower( $first[0] ?? '' ) ) . ( isset( $first[1] ) ? ' e ' . esc_html( strtolower( $first[1] ) ) : '' ) . ', offre prestazioni fluide in ogni situazione: dal lavoro allo svago.</p>'
+		. '<p>' . esc_html( $keys[0] ?? '' ) . ': <strong>' . esc_html( $first[0] ?? '' ) . '</strong>' . ( isset( $first[1] ) ? ' · ' . esc_html( $keys[1] ) . ': <strong>' . esc_html( $first[1] ) . '</strong>' : '' ) . '. Prestazioni fluide in ogni situazione, dal lavoro allo svago.</p>'
 		. '<h2>Specifiche tecniche</h2><table class="pishop-specs"><tbody>' . $specs . '</tbody></table>'
 		. '<h2>Perché acquistarlo su PiShop</h2><ul><li>Spedizione gratuita sopra 49 €</li><li>Reso gratuito entro 14 giorni</li><li>Pagamenti sicuri e possibilità di pagare alla consegna</li><li>Prodotto originale con garanzia Italia</li></ul>';
 }
