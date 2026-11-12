@@ -1,0 +1,8 @@
+#!/bin/bash
+# WP-CLI wrapper for the Local site "onlineshop" (PiShop)
+LOCAL_SUPPORT="$HOME/Library/Application Support/Local"
+PHP="$LOCAL_SUPPORT/lightning-services/php-8.2.29+0/bin/darwin-arm64/bin/php"
+INI="$LOCAL_SUPPORT/run/QbDGzjQ1w/conf/php/php.ini"
+SOCK="$LOCAL_SUPPORT/run/QbDGzjQ1w/mysql/mysqld.sock"
+PHAR="/Applications/Local.app/Contents/Resources/extraResources/bin/wp-cli/wp-cli.phar"
+exec "$PHP" -c "$INI" -d "mysqli.default_socket=$SOCK" -d memory_limit=1024M "$PHAR" --path="$HOME/Local Sites/onlineshop/app/public" "$@"

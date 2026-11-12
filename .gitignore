@@ -1,0 +1,40 @@
+# ── Secrets & environment ────────────────────────────
+wp-config.php
+wp-config-local.php
+.env
+.env.*
+!.env.example
+auth.json
+*.pem
+*.key
+
+# ── Databases & backups ─────────────────────────────
+*.sql
+*.sql.gz
+*.sqlite
+*.bak
+*.zip
+*.tar.gz
+*.wpress
+backups/
+
+# ── WordPress runtime content ───────────────────────
+uploads/
+wp-content/uploads/
+wp-content/cache/
+wp-content/upgrade/
+wp-content/debug.log
+*.log
+
+# ── Dependencies / build ────────────────────────────
+node_modules/
+vendor/
+dist/
+.cache/
+
+# ── OS / editor ─────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
