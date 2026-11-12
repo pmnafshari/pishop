@@ -1,43 +1,108 @@
-# ── Secrets & environment ────────────────────────────
+# ==========================================================================
+# PiShop – .gitignore (see rules.md §1, §8: nothing secret ever enters git)
+# ==========================================================================
+
+# ── WordPress config & secrets ──────────────────────────────────────────
 wp-config.php
-wp-config-local.php
+wp-config-*.php
+!wp-config-sample.php
+.htaccess
+.user.ini
+php.ini
+auth.json
+.npmrc
+.yarnrc*
+.netrc
 .env
 .env.*
 !.env.example
-auth.json
+*.env
+.secrets*
+secrets.*
+credentials*
+*.credentials
+**/graphql-connection-info.json
+**/cli-connection-info.json
+
+# ── Keys & certificates ─────────────────────────────────────────────────
 *.pem
 *.key
+*.crt
+*.cer
+*.p12
+*.pfx
+*.jks
+*.keystore
+id_rsa*
+id_ed25519*
+*.gpg
+*.asc
 
-# ── Databases & backups ─────────────────────────────
+# ── Databases, dumps & backups ──────────────────────────────────────────
 *.sql
 *.sql.gz
+*.sql.zip
 *.sqlite
+*.sqlite3
+*.db
+*.dump
 *.bak
+*.backup
+*.old
+*.orig
+*.swp
 *.zip
+*.tar
 *.tar.gz
+*.tgz
+*.7z
+*.rar
 *.wpress
 backups/
+backup/
+**/updraft/
+**/ai1wm-backups/
 
-# ── WordPress runtime content ───────────────────────
+# ── WordPress runtime content (user uploads, caches, logs) ──────────────
 uploads/
 wp-content/uploads/
 wp-content/cache/
 wp-content/upgrade/
+wp-content/backup*/
+wp-content/wflogs/
 wp-content/debug.log
+wp-content/advanced-cache.php
+wp-content/object-cache.php
+woocommerce_uploads/
+wc-logs/
 *.log
+logs/
 
-# ── Dependencies / build ────────────────────────────
-node_modules/
-vendor/
-dist/
-.cache/
-
-# ── OS / editor ─────────────────────────────────────
-.DS_Store
-Thumbs.db
-.idea/
-.vscode/
-*.swp
+# ── Generated / environment-specific project files ──────────────────────
 bin/php.d/
 data/media-map.json
 data/build/
+
+# ── Dependencies & build output ─────────────────────────────────────────
+node_modules/
+vendor/
+dist/
+build/
+.cache/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# ── OS / editor / tooling ───────────────────────────────────────────────
+.DS_Store
+._*
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.sublime-*
+.claude/
+*.local
+*.tmp
+*.temp
