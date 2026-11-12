@@ -39,3 +39,4 @@ Thumbs.db
 .vscode/
 *.swp
 bin/php.d/
+data/media-map.json
